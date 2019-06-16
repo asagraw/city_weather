@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Hello</title>
+</head>
+
+<body>
+    <h1>Weather in your city</h1>
+    <!-- <div><a href="/">enter</a> | <a href="/logs">list</a></div> -->
+    <label for="city">city</label>
+    <input id="city" type="text"/>
+    <button id="submit" type="submit ">Submit</button>
+    <p>
+        The weather here in <span id="city_resp"></span>,
+        is <span id="summary"></span> with
+        a temperature of <span id="temp"></span>&deg; C.
+    </p>
+    <script>
+        const button = document.getElementById("submit");
+        button.addEventListener('click', async event => {
+            let city = document.getElementById("city").value;
+            const data = { city };
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+            const response = await fetch('/api', options);
+            const json = await response.json();
+            if(json){
+                document.getElementById("city_resp").textContent = json.api_data.name;
+                document.getElementById("temp").textContent = json.api_data.main.temp;
+            }
+            console.log(json);
+        });
+    </script>
+</body>
+
+</html>
